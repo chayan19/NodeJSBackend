@@ -2,10 +2,11 @@ const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const basepath = require('./routes/router');
+const db = require ('./config/db');
 
 dotenv.config({path: './config/config.env'});
 const port = process.env.PORT || 5000;
-
+db();
 const app = express();
 
 // mongodb+srv://choudhurychayanpersonal:<password>@mono-chayan-nodejs.z7inq5x.mongodb.net/test
