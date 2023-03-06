@@ -6,7 +6,6 @@ const routes = express.Router();
 routes.route('/')
 .get(getBootcamps)
 .post(createBootcamps);
-
 routes.route('/:id')
 .put(updateBootcamp)
 .get(getBootcamp)
