@@ -10,7 +10,26 @@ const BootCModel = require('../models/Bootcamp');
 
 exports.getBootcamps = async (req , res, next) => {
     try {
-        const bootcamps = await BootCModel.find();
+        let query;
+
+        const reqQuery = {...req.query};
+        console.log(req.query);
+        const removeFields = ['select'];
+
+        removeFields.forEach(param => {delete reqQuery[param]});
+
+        let queryStr= JSON.stringify(reqQuery);
+
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g , match => `$${match}`);
+        console.log(queryStr);
+        query =  BootCModel.find(JSON.parse(queryStr));
+        
+        if (req.query.select){
+            const fields = req.query.select.split(',').join(' ');
+            query = query.select(fields);
+        } 
+        const bootcamps = await query;
+        
         res.status(200).json({success: true, data: bootcamps});
     } catch (error) {
         res.status(400).json({success: false, data:error.message});
